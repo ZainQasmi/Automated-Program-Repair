@@ -147,7 +147,7 @@ def main():
 	testFileName = sys.argv[1]
 	resultsFileName = sys.argv[2]
 
-	execfile('testMid.py')
+	# execfile('testMid.py')
 
 	# testingCodeFileName = sys.argv[3]
 	# print testingCodeFileName
