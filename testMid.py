@@ -12,14 +12,25 @@
 # 	except AssertionError:
 # 		print "A test case failed"
 # 		return False
-
-
 # test_mid('lol')
-
 
 import unittest
 
-execfile('mid.py')
+# execfile('mid.py')
+
+def mid(x,y,z):
+	m = z
+	if (y<z):
+		if(x<y):
+			m = y
+		elif (x<z):
+			m = x
+	else:
+		if(x>y):
+			m = y
+		elif (x>z):
+			m = x
+	return m
 
 class TestStringMethods(unittest.TestCase):
 
