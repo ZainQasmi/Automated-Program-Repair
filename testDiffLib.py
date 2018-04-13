@@ -23,17 +23,17 @@ imperdiet tempus. Suspendisse eu lectus. In nunc. """
 text2_lines = text2.splitlines()
 
 
-text1 = "I suck"
-text1_lines = text1.splitlines()
-text2 = "you suck"
-text2_lines = text2.splitlines()
-
 import difflib
 # from difflib_data import *
 
 d = difflib.Differ()
 diff = d.compare(text1_lines, text2_lines)
-print '\n'.join(diff)
+seq=difflib.SequenceMatcher(None, text1,text2)
+# print '\n'.join(diff)
+print seq.ratio()
 
 diff2 = difflib.ndiff(text1,text2)
-print ''.join(diff2),
+seq2=difflib.SequenceMatcher(None, text1,text2)
+# print ''.join(diff2)
+print seq2.ratio()
+

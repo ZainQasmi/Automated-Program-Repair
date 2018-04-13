@@ -67,6 +67,9 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 
 # program restricted to 26 vars. Fcuk my life
 def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
+	pass
+
+def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
 	# print 'line actual: ',line_to_fix
 	# print buggedVarList
 	tempLine = line_to_fix
@@ -84,12 +87,14 @@ def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, cod
 		# print oneList
 		for i in range(0,len(buggedVarList)):
 			temp = '([^\w\D]*\\b' + buggedVarList[i] + '\\b)|([^\w\D]*' + buggedVarList[i] + '[_\d]+)'
-			tempLine = re.sub(temp, oneList[i], tempLine)
+			tempLine = re.sub(temp, oneList[i], tempLine) #substitute
 			# print buggedVarList[i], ' ', oneList[i], ' ', tempLine
 			counter +=1
 		# print 'new :: ',tempLine
 
 		# print len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
+
+		# Calculate and add requisite no. of tabs to the changed line of code
 		tabsToAdd = len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
 		for i in range (0,tabsToAdd):
 			tempLine = '\t' + tempLine
@@ -99,6 +104,7 @@ def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, cod
 		for line in codeToEdit:
 			tempCodeString += line + '\n'
 			# print line
+		print tempLine
 
 		testRepairedCode(tempCodeString, original_code)
 	# print counter
@@ -137,10 +143,8 @@ def testRepairedCode(tempCodeString, original_code):
 
 	# 	if potentiallyCorrect == True:
 	# 		print oneCase
-			# print suggestedCodeOutput, originalCodeOutput
-		# print 'sug', suggestedCodeOutput
-
-
+	# 		print suggestedCodeOutput, originalCodeOutput
+	# 	print 'sug', suggestedCodeOutput
 	# print "Function returns ::",suggestedCodeOutput
 
 def main():
