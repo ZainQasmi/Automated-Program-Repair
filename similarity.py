@@ -22,8 +22,8 @@ lines = [1,2,3,4,5,6,7,8,9,10,11,12,13]
 
 for i in range(0,len(lines)):
 	if (i+2 < len(lines)):
-		# if i >= buggedLineNo-3 and i <= buggedLineNo-1:
-		if i == buggedLineNo-1 or i+1 == buggedLineNo-1 or i+2 == buggedLineNo-1 or i+3 == buggedLineNo-1 or i+4 == buggedLineNo-1:
+		if i >= buggedLineNo-3 and i <= buggedLineNo-1:
+		# if i == buggedLineNo-1 or i+1 == buggedLineNo-1 or i+2 == buggedLineNo-1 or i+3 == buggedLineNo-1 or i+4 == buggedLineNo-1:
 			print 'skipped'
 		else:
 			print lines[i], lines[i+1], lines[i+2]

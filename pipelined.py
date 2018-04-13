@@ -65,11 +65,14 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 			tempVarList.append(p)
 	return tempVarList
 
-# program restricted to 26 vars. Fcuk my life
-def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
-	pass
+def tryOperatorsReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
+	templine = line_to_fix
+	tempCodeString = ''
+	print
 
-def returnSuggestedLine(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
+
+
+def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
 	# print 'line actual: ',line_to_fix
 	# print buggedVarList
 	tempLine = line_to_fix
@@ -147,6 +150,19 @@ def testRepairedCode(tempCodeString, original_code):
 	# 	print 'sug', suggestedCodeOutput
 	# print "Function returns ::",suggestedCodeOutput
 
+def makeOperatorsList():
+	# o1 = ['+','-','*','/','%','**','//'] #arithematic ** //
+	o1 = ['+','-','*','/','%','**'] #arithematic ** //
+	# o2 = ['==','!=','<>','<','>','>=','<='] #comparison 
+	o2 = ['==','!=','<','>','>=','<='] #comparison 
+	# o3 = ['=','+=','-=','*=','/=','%=','**=','//='] #assignment ,'**=','//='
+	o3 = ['=','+=','-=','*='] #assignment ,'**=','//='
+	o4 = o1+o2+o3
+
+	abc_list = list(string.ascii_uppercase)
+
+	return o1,o2,o3,o4,abc_list
+
 def main():
 	testFileName = sys.argv[1]
 	resultsFileName = sys.argv[2]
@@ -182,7 +198,11 @@ def main():
 	# print buggedVariables
 
 	suggestedVarListofLists = makeVarCombination(totalVariables, len(buggedVariables))
-	returnSuggestedLine(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
+	tryVaribleReplacement(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
+
+	o1,o2,o3,o4,abc_list = makeOperatorsList()
+	# suggestedOperatorListofLists = makeOpCombination()
+	tryOperatorsReplacement(line_to_fix.strip(), buggedVariables, suggestedVarListofLists, codeToEdit, original_code)
 	
 if __name__ == "__main__":
     main()

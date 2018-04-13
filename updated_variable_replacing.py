@@ -40,6 +40,7 @@ with open('pipelined.py', 'r') as myfile:
 	source=myfile.read()
 	root = ast.parse(source)
 	vars = sorted({node.id for node in ast.walk(root) if isinstance(node, ast.Name)})
+
 print vars
 
 def get_buggyLine_operators(line):
