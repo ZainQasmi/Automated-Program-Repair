@@ -21,6 +21,7 @@ import ast
 import re
 import random
 import string
+import tokenize, token
 from itertools import permutations
 from itertools import combinations
 
@@ -65,12 +66,9 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 			tempVarList.append(p)
 	return tempVarList
 
+# program restricted to 26 vars. Fcuk my life
 def tryOperatorsReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
-	templine = line_to_fix
-	tempCodeString = ''
-	print
-
-
+	pass
 
 def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
 	# print 'line actual: ',line_to_fix
@@ -107,61 +105,94 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 		for line in codeToEdit:
 			tempCodeString += line + '\n'
 			# print line
-		print tempLine
+		# print tempLine
 
 		testRepairedCode(tempCodeString, original_code)
 	# print counter
 
 def testRepairedCode(tempCodeString, original_code):
-	pass
-	# test_mid.test_mid(tempCodeString)
-	# potentiallyCorrect = True
-	# for oneCase in testCaseResuts:
+	potentiallyCorrect = True
+	for oneCase in testCaseResuts:
 
-	# 	strInput = oneCase[0]
-	# 	tupleofIntCastedInput = tuple(map(int, strInput.split(',')))
+		strInput = oneCase[0]
+		tupleofIntCastedInput = tuple(map(int, strInput.split(',')))
 		
-	# 	exec(original_code)
-	# 	originalCodeOutput = mid(*tupleofIntCastedInput)
-	# 	# print 'ori', originalCodeOutput
+		exec(original_code)
+		originalCodeOutput = mid(*tupleofIntCastedInput)
+		# print 'ori', originalCodeOutput
 
-	# 	exec(tempCodeString)
-	# 	suggestedCodeOutput = mid(*tupleofIntCastedInput)
-	# 	print 'sug', originalCodeOutput, tempCodeString
+		exec(tempCodeString)
+		suggestedCodeOutput = mid(*tupleofIntCastedInput)
+		# print 'sug', originalCodeOutput, tempCodeString
 
-	# 	if oneCase[1] == 'P':
-	# 		if originalCodeOutput == suggestedCodeOutput:
-	# 			pass
-	# 			# print 'so far so good'
-	# 		else:
-	# 			# print 'FUBAR. Next'
-	# 			potentiallyCorrect = False
-	# 	elif oneCase[1] == 'F':
-	# 		if originalCodeOutput == suggestedCodeOutput:
-	# 			# print 'this should be different'
-	# 			potentiallyCorrect = False
-	# 		else:
-	# 			pass
-	# 			# print 'hmm...see if this is right'
+		if oneCase[1] == 'P':
+			if originalCodeOutput == suggestedCodeOutput:
+				pass
+				# print 'so far so good'
+			else:
+				# print 'FUBAR. Next'
+				potentiallyCorrect = False
+		elif oneCase[1] == 'F':
+			if originalCodeOutput == suggestedCodeOutput:
+				# print 'this should be different'
+				potentiallyCorrect = False
+			else:
+				pass
+				# print 'hmm...see if this is right'
 
-	# 	if potentiallyCorrect == True:
-	# 		print oneCase
-	# 		print suggestedCodeOutput, originalCodeOutput
-	# 	print 'sug', suggestedCodeOutput
+		if potentiallyCorrect == True:
+			print oneCase
+			print suggestedCodeOutput, originalCodeOutput
+		# print 'sug', suggestedCodeOutput
 	# print "Function returns ::",suggestedCodeOutput
 
-def makeOperatorsList():
-	# o1 = ['+','-','*','/','%','**','//'] #arithematic ** //
+
+def get_buggyLine_operators(line):
+	operators = []
+	for t in tokenize.generate_tokens(iter([line]).next):
+	    if token.tok_name[t[0]] == 'OP':
+	    	operators.append(t[1])
+
+	return operators
+
+def get_list_of_all_operator_combiantions(line,operators):
 	o1 = ['+','-','*','/','%','**'] #arithematic ** //
-	# o2 = ['==','!=','<>','<','>','>=','<='] #comparison 
 	o2 = ['==','!=','<','>','>=','<='] #comparison 
-	# o3 = ['=','+=','-=','*=','/=','%=','**=','//='] #assignment ,'**=','//='
 	o3 = ['=','+=','-=','*='] #assignment ,'**=','//='
 	o4 = o1+o2+o3
+	tempOpList = []
+	numberOp = len(operators)
+	for c in combinations(o4, numberOp):
+			for p in permutations(c):
+				tempOpList.append(p)
 
+	## all possible combinations of operators generated
+	return tempOpList
+
+def generate_new_lines_with_all_operator_combinations(line,operators,operator_combinations):
 	abc_list = list(string.ascii_uppercase)
+	new_lines = []
+	for it in range(0,len(operator_combinations)):
+		temp_combination = list(operator_combinations[it])
 
-	return o1,o2,o3,o4,abc_list
+		temp_line = line
+		
+		replace_list=[]
+		abc_index=0
+		for i in range(0,len(temp_combination)):
+			if temp_combination[i] in operators[i+1:]:
+				replace_list.append([temp_combination[i],abc_list[abc_index]])
+				temp_line = temp_line.replace(operators[i],abc_list[abc_index])
+				abc_index+=1
+			else:
+				temp_line = temp_line.replace(operators[i],temp_combination[i])
+
+		for i in range(0,len(replace_list)):
+			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
+
+		new_lines.append(temp_line)
+
+	return new_lines
 
 def main():
 	testFileName = sys.argv[1]
@@ -192,9 +223,18 @@ def main():
 	suggestedVarListofLists = makeVarCombination(totalVariables, len(buggedVariables))
 	tryVaribleReplacement(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
 
-	o1,o2,o3,o4,abc_list = makeOperatorsList()
-	# suggestedOperatorListofLists = makeOpCombination()
-	tryOperatorsReplacement(line_to_fix.strip(), buggedVariables, suggestedVarListofLists, codeToEdit, original_code)
-	
+	# line_to_fix = 'a=b**c-2'
+	ops = get_buggyLine_operators(line_to_fix)
+	op_combinations = get_list_of_all_operator_combiantions(line_to_fix,ops)
+	corrected_lines = generate_new_lines_with_all_operator_combinations(line_to_fix,ops,op_combinations)
+
+	# print ops
+	# for op in op_combinations:
+		# print op[0]
+	# for oneLiner in corrected_lines:
+	# 	print oneLiner
+	# print line_to_fix.strip()
+
+
 if __name__ == "__main__":
     main()

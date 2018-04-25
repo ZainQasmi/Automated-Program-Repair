@@ -4,8 +4,8 @@ def mid(x,y,z):
 		if(x<y):
 			m = y
 		elif (x<z):
-			m = x
-	else:
+			m = y
+	else:	
 		if(x>y):
 			m = y
 		elif (x>z):
