@@ -5,11 +5,14 @@ One Paragraph of project description goes here
 ## Getting Started
 
 ```
-python pipelined.py <arg1> <arg2> <arg3>
+python participatedlined.py <arg1> <arg2> <arg3>
 ```
 where
+
 arg1 = Your script to find bug in and repair
+
 arg2 = Result of test cases which will be passed to tarantula
+
 arg3 = Unittests for testing if repaired code has its bug fixed
 
 For example
