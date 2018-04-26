@@ -36,9 +36,9 @@ execfile('tarantula.py')
 # print '//===----------------------- Returns Tarantula ------------------------===//'
 
 print
-buggedLine = lines[3].lineNo
+buggedLine = lines[0].lineNo
 print '//===-----------------------    Bugged Line    ------------------------===//'
-print lines[3].text.strip()
+print lines[0].text.strip()
 
 def loadScript(fname,lines):
     with open(fname) as f:
@@ -65,34 +65,35 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 			tempVarList.append(p)
 	return tempVarList
 
-# program restricted to 26 vars. Fcuk my life
-def tryOperatorsReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
-	pass
+def tryOperatorReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
+	print '1',line_to_fix
+	print '2',buggedVarList
+	print '3',suggestedVarListofLists
+	print '4',codeToEdit
+	print '5',original_code
 
 def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
-	
 	# print 'line actual: ',line_to_fix
-	print buggedVarList
+	# print buggedVarList
 	tempLine = line_to_fix
 	tempCodeString = ''
 	counter = 0;
-	print
 
-	breakAtIter = 2
+	# breakAtIter = 2
 	for oneList in suggestedVarListofLists:
 		# if breakAtIter == 0:
 		# 	break
-		# breakAtIter -=1
+		# breakAtIter -=1	
 		tempLine = line_to_fix
 		# print tempLine
 		# print oneList
 		for i in range(0,len(buggedVarList)):
 			temp = '([^\w\D]*\\b' + buggedVarList[i] + '\\b)|([^\w\D]*' + buggedVarList[i] + '[_\d]+)'
 			tempLine = re.sub(temp, oneList[i], tempLine) #substitute
-			print buggedVarList[i], ' ', oneList[i], ' ', tempLine
+			# print buggedVarList[i], ' ', oneList[i], ' ', tempLine
 			counter +=1
-		# print 'new :: ',tempLine
+		print 'new :: ',tempLine, oneList
 
 		# print len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
 
@@ -108,58 +109,11 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 			# print line
 		# print tempLine
 
-		# if testRepairedCode.unittests(tempCodeString):
-		# 	print '//===------------------------ Code with Bug Fix -----------------------===//'
-		# 	print tempCodeString
+		if testRepairedCode.unittests(tempCodeString):
+			print '//===------------------------ Code with Bug Fix -----------------------===//'
+			print tempCodeString
 
 	# print counter
-
-def get_buggyLine_operators(line):
-	operators = []
-	for t in tokenize.generate_tokens(iter([line]).next):
-	    if token.tok_name[t[0]] == 'OP':
-	    	operators.append(t[1])
-
-	return operators
-
-def get_list_of_all_operator_combiantions(line,operators):
-	o1 = ['+','-','*','/','%','**'] #arithematic ** //
-	o2 = ['==','!=','<','>','>=','<='] #comparison 
-	o3 = ['=','+=','-=','*='] #assignment ,'**=','//='
-	o4 = o1+o2+o3
-	tempOpList = []
-	numberOp = len(operators)
-	for c in combinations(o4, numberOp):
-			for p in permutations(c):
-				tempOpList.append(p)
-
-	## all possible combinations of operators generated
-	return tempOpList
-
-def generate_new_lines_with_all_operator_combinations(line,operators,operator_combinations):
-	abc_list = list(string.ascii_uppercase)
-	new_lines = []
-	for it in range(0,len(operator_combinations)):
-		temp_combination = list(operator_combinations[it])
-
-		temp_line = line
-		
-		replace_list=[]
-		abc_index=0
-		for i in range(0,len(temp_combination)):
-			if temp_combination[i] in operators[i+1:]:
-				replace_list.append([temp_combination[i],abc_list[abc_index]])
-				temp_line = temp_line.replace(operators[i],abc_list[abc_index])
-				abc_index+=1
-			else:
-				temp_line = temp_line.replace(operators[i],temp_combination[i])
-
-		for i in range(0,len(replace_list)):
-			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
-
-		new_lines.append(temp_line)
-
-	return new_lines
 
 def main():
 	testFileName = sys.argv[1]
@@ -190,10 +144,13 @@ def main():
 	suggestedVarListofLists = makeVarCombination(totalVariables, len(buggedVariables))
 	tryVaribleReplacement(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
 
+
+	tryOperatorReplacement(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
+
 	# line_to_fix = 'a=b**c-2'
-	ops = get_buggyLine_operators(line_to_fix)
-	op_combinations = get_list_of_all_operator_combiantions(line_to_fix,ops)
-	corrected_lines = generate_new_lines_with_all_operator_combinations(line_to_fix,ops,op_combinations)
+	# ops = get_buggyLine_operators(line_to_fix)
+	# op_combinations = get_list_of_all_operator_combiantions(line_to_fix,ops)
+	# corrected_lines = generate_new_lines_with_all_operator_combinations(line_to_fix,ops,op_combinations)
 
 	# print ops
 	# for op in op_combinations:
