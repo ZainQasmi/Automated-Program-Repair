@@ -112,58 +112,7 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 			print '//===------------------------ Code with Bug Fix -----------------------===//'
 			print tempCodeString
 
-		# testRepairedCode(tempCodeString, original_code)
 	# print counter
-
-def testRepairedCode(tempCodeString, original_code):
-	pass
-	# exec('%s.unittests(tempCodeString)'%sys.argv[3])
-	# exec('import %s as testRepairedCode'%sys.argv[3])
-	# print testRepairedCode.unittests(tempCodeString)
-	# funName2 = 'testMid.unittests(tempCodeString)'
-	# exec(funName2)	
-	# exec('%s(*(tests[i]))' % funName)
-	
-	# exec('''loadtestcases.txt''' % funName)
-	# if testMid.tests(tempCodeString):
-		# print tempCodeString
-
-	# print mid(2,1,3)
-	# potentiallyCorrect = True
-
-	# for oneCase in testCaseResuts:
-
-	# 	strInput = oneCase[0]
-	# 	tupleofIntCastedInput = tuple(map(int, strInput.split(',')))
-		
-	# 	exec(original_code)
-	# 	originalCodeOutput = mid(*tupleofIntCastedInput)
-	# 	# print 'ori', originalCodeOutput
-
-	# 	exec(tempCodeString)
-	# 	suggestedCodeOutput = mid(*tupleofIntCastedInput)
-	# 	# print 'sug', originalCodeOutput, tempCodeString
-
-	# 	if oneCase[1] == 'P':
-	# 		if originalCodeOutput == suggestedCodeOutput:
-	# 			pass
-	# 			# print 'so far so good'
-	# 		else:
-	# 			# print 'FUBAR. Next'
-	# 			potentiallyCorrect = False
-	# 	elif oneCase[1] == 'F':
-	# 		if originalCodeOutput == suggestedCodeOutput:
-	# 			# print 'this should be different'
-	# 			potentiallyCorrect = False
-	# 		else:
-	# 			pass
-	# 			# print 'hmm...see if this is right'
-
-	# 	if potentiallyCorrect == True:
-	# 		pass
-	# 	print oneCase, suggestedCodeOutput, originalCodeOutput
-		# print 'sug', suggestedCodeOutput
-	# print "Function returns ::",suggestedCodeOutput
 
 def get_buggyLine_operators(line):
 	operators = []
