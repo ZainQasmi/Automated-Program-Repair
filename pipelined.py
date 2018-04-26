@@ -36,9 +36,9 @@ execfile('tarantula.py')
 # print '//===----------------------- Returns Tarantula ------------------------===//'
 
 print
-buggedLine = lines[0].lineNo
+buggedLine = lines[3].lineNo
 print '//===-----------------------    Bugged Line    ------------------------===//'
-print lines[0].text.strip()
+print lines[3].text.strip()
 
 def loadScript(fname,lines):
     with open(fname) as f:
@@ -73,7 +73,7 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
 	
 	# print 'line actual: ',line_to_fix
-	# print buggedVarList
+	print buggedVarList
 	tempLine = line_to_fix
 	tempCodeString = ''
 	counter = 0;
@@ -90,7 +90,7 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 		for i in range(0,len(buggedVarList)):
 			temp = '([^\w\D]*\\b' + buggedVarList[i] + '\\b)|([^\w\D]*' + buggedVarList[i] + '[_\d]+)'
 			tempLine = re.sub(temp, oneList[i], tempLine) #substitute
-			# print buggedVarList[i], ' ', oneList[i], ' ', tempLine
+			print buggedVarList[i], ' ', oneList[i], ' ', tempLine
 			counter +=1
 		# print 'new :: ',tempLine
 
@@ -108,9 +108,9 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 			# print line
 		# print tempLine
 
-		if testRepairedCode.unittests(tempCodeString):
-			print '//===------------------------ Code with Bug Fix -----------------------===//'
-			print tempCodeString
+		# if testRepairedCode.unittests(tempCodeString):
+		# 	print '//===------------------------ Code with Bug Fix -----------------------===//'
+		# 	print tempCodeString
 
 	# print counter
 
