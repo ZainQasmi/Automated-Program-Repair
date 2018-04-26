@@ -109,7 +109,7 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 		# print tempLine
 
 		if testRepairedCode.unittests(tempCodeString):
-			print '//===-------------------------- Working Code --------------------------===//'
+			print '//===------------------------ Code with Bug Fix -----------------------===//'
 			print tempCodeString
 
 		# testRepairedCode(tempCodeString, original_code)
