@@ -33,13 +33,12 @@ with open("importNames.csv", "w") as text_file:
 ### The line with highest likelihood of having a bug is at first index i.e. lines[0]
 print '//===----------------------- Running Tarantula ------------------------===//'
 execfile('tarantula.py')
-print '//===----------------------- Returns Tarantula ------------------------===//'
+# print '//===----------------------- Returns Tarantula ------------------------===//'
 
 print
 buggedLine = lines[0].lineNo
 print '//===-----------------------    Bugged Line    ------------------------===//'
 print lines[0].text.strip()
-
 
 def loadScript(fname,lines):
     with open(fname) as f:
@@ -71,6 +70,8 @@ def tryOperatorsReplacement(line_to_fix, buggedVarList, suggestedVarListofLists,
 	pass
 
 def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
+	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
+	
 	# print 'line actual: ',line_to_fix
 	# print buggedVarList
 	tempLine = line_to_fix
@@ -107,45 +108,62 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 			# print line
 		# print tempLine
 
-		testRepairedCode(tempCodeString, original_code)
+		if testRepairedCode.unittests(tempCodeString):
+			print '//===-------------------------- Working Code --------------------------===//'
+			print tempCodeString
+
+		# testRepairedCode(tempCodeString, original_code)
 	# print counter
 
 def testRepairedCode(tempCodeString, original_code):
-	potentiallyCorrect = True
-	for oneCase in testCaseResuts:
+	pass
+	# exec('%s.unittests(tempCodeString)'%sys.argv[3])
+	# exec('import %s as testRepairedCode'%sys.argv[3])
+	# print testRepairedCode.unittests(tempCodeString)
+	# funName2 = 'testMid.unittests(tempCodeString)'
+	# exec(funName2)	
+	# exec('%s(*(tests[i]))' % funName)
+	
+	# exec('''loadtestcases.txt''' % funName)
+	# if testMid.tests(tempCodeString):
+		# print tempCodeString
 
-		strInput = oneCase[0]
-		tupleofIntCastedInput = tuple(map(int, strInput.split(',')))
+	# print mid(2,1,3)
+	# potentiallyCorrect = True
+
+	# for oneCase in testCaseResuts:
+
+	# 	strInput = oneCase[0]
+	# 	tupleofIntCastedInput = tuple(map(int, strInput.split(',')))
 		
-		exec(original_code)
-		originalCodeOutput = mid(*tupleofIntCastedInput)
-		# print 'ori', originalCodeOutput
+	# 	exec(original_code)
+	# 	originalCodeOutput = mid(*tupleofIntCastedInput)
+	# 	# print 'ori', originalCodeOutput
 
-		exec(tempCodeString)
-		suggestedCodeOutput = mid(*tupleofIntCastedInput)
-		# print 'sug', originalCodeOutput, tempCodeString
+	# 	exec(tempCodeString)
+	# 	suggestedCodeOutput = mid(*tupleofIntCastedInput)
+	# 	# print 'sug', originalCodeOutput, tempCodeString
 
-		if oneCase[1] == 'P':
-			if originalCodeOutput == suggestedCodeOutput:
-				pass
-				# print 'so far so good'
-			else:
-				# print 'FUBAR. Next'
-				potentiallyCorrect = False
-		elif oneCase[1] == 'F':
-			if originalCodeOutput == suggestedCodeOutput:
-				# print 'this should be different'
-				potentiallyCorrect = False
-			else:
-				pass
-				# print 'hmm...see if this is right'
+	# 	if oneCase[1] == 'P':
+	# 		if originalCodeOutput == suggestedCodeOutput:
+	# 			pass
+	# 			# print 'so far so good'
+	# 		else:
+	# 			# print 'FUBAR. Next'
+	# 			potentiallyCorrect = False
+	# 	elif oneCase[1] == 'F':
+	# 		if originalCodeOutput == suggestedCodeOutput:
+	# 			# print 'this should be different'
+	# 			potentiallyCorrect = False
+	# 		else:
+	# 			pass
+	# 			# print 'hmm...see if this is right'
 
-		if potentiallyCorrect == True:
-			print oneCase
-			print suggestedCodeOutput, originalCodeOutput
+	# 	if potentiallyCorrect == True:
+	# 		pass
+	# 	print oneCase, suggestedCodeOutput, originalCodeOutput
 		# print 'sug', suggestedCodeOutput
 	# print "Function returns ::",suggestedCodeOutput
-
 
 def get_buggyLine_operators(line):
 	operators = []
