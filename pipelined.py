@@ -90,6 +90,7 @@ def tryVaribleReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, c
 		# print oneList
 		for i in range(0,len(buggedVarList)):
 			temp = '([^\w\D]*\\b' + buggedVarList[i] + '\\b)|([^\w\D]*' + buggedVarList[i] + '[_\d]+)'
+			print 'temp: ',temp
 			tempLine = re.sub(temp, oneList[i], tempLine) #substitute
 			# print buggedVarList[i], ' ', oneList[i], ' ', tempLine
 			counter +=1
