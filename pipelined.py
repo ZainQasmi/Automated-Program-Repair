@@ -89,8 +89,7 @@ def tryVariableReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, 
 		for i in range(0,len(replace_list)):
 			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
 
-		## Calculate and add requisite no. of tabs to the changed line of code
-		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
+		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip()) ## Calculate and add requisite no. of tabs to the changed line of code
 
 		for i in range (0,tabsToAdd):
 			temp_line = '\t' + temp_line
@@ -117,15 +116,12 @@ def get_list_of_all_operator_combinations(line,operators):
 	o2 = ['==','!=','<','>','>=','<='] #comparison 
 	o3 = ['=','+=','-=','*='] #assignment ,'**=','//='
 	o4 = o1+o2+o3
-
 	tempOpList = []
 	numberOp = len(operators)
 	for c in combinations(o4, numberOp):
 			for p in permutations(c):
 				tempOpList.append(p)
-
-	## all possible combinations of operators generated
-	return tempOpList
+	return tempOpList ## All possible combinations of operators generated
 
 def tryOperatorReplacement(line_to_fix, buggedOperators, suggestedOperatorListofLists, codeToEdit, original_code):
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
@@ -152,8 +148,7 @@ def tryOperatorReplacement(line_to_fix, buggedOperators, suggestedOperatorListof
 		for i in range(0,len(replace_list)):
 			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
 
-		## Calculate and add requisite no. of tabs to the changed line of code
-		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
+		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip()) ## Calculate and add requisite no. of tabs to the changed line of code
 
 		for i in range (0,tabsToAdd):
 			temp_line = '\t' + temp_line
@@ -190,9 +185,6 @@ def main():
 	if line_to_fix[len(line_to_fix)-1] == ':':
 		temp_line = line_to_fix.strip() + 'pass'
 
-	buggedVariables = makeVarList(temp_line)
-	suggestedVarListofLists = makeVarCombination(totalVariables, len(buggedVariables))
-
 	############################################################
 	# before passing codeToEdit in each function. make codeToEdit=Original_bugged_code. Here original_bugged_code is mid.py in 
 	#its original incorrect. Otherwise there are problelms
@@ -200,17 +192,14 @@ def main():
 	# update codeToEdit after every function call. Therefore I have introduced the back_up_code variable, which
 	# contains the original incorrect state of mid.py
 	back_up_code = codeToEdit
+	buggedVariables = makeVarList(temp_line)
+	suggestedVarListofLists = makeVarCombination(totalVariables, len(buggedVariables))
 	tryVariableReplacement(line_to_fix.strip(),buggedVariables,suggestedVarListofLists, codeToEdit, original_code)
-
-
 	codeToEdit = back_up_code
-
 	buggedOperators = get_buggyLine_operators(line_to_fix.strip())
-	# print buggedOperators
 	suggestedOperatorListofLists = get_list_of_all_operator_combinations(line_to_fix.strip, buggedOperators)
-	# print suggestedOperatorListofLists
 	tryOperatorReplacement(line_to_fix.strip(), buggedOperators, suggestedOperatorListofLists, codeToEdit, original_code )
-	# code = back_up_code
+	codeToEdit = back_up_code
 	# tryVariableMapping(line_to_fix.strip(),buggedVariables, lines, codeToEdit)
 	#############################################################
 
