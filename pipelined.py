@@ -24,19 +24,18 @@ import string
 import tokenize, token
 from itertools import permutations
 from itertools import combinations
-from blocks_DJ import *
 
 ### Writes test filename and test result filename to file which will be used by tarantula.py
 with open("importNames.csv", "w") as text_file:
     text_file.write("%s,%s" %(sys.argv[1],sys.argv[2])) 
 
+from blocks_DJ import *
 ### Executes tarantula which isolates the bugged line and stores it in list lines. 
 ### The line with highest likelihood of having a bug is at first index i.e. lines[0]
 print '//===-------------------- Running Tarantula ---------------------===//'
 execfile('tarantula.py')
 print '//===----------------------- Returns Tarantula ------------------------===//'
 
-print
 buggedLine = lines[0].lineNo
 print '//===--------------------    Bugged Line    ---------------------===//'
 print lines[0].text.strip()
@@ -202,6 +201,34 @@ def generate_new_lines_with_all_operator_combinations(line,operators,operator_co
 
 	return new_lines
 
+def tryBoolReplacement(line_to_fix,codeToEdit):
+	# pass
+	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
+
+	tempCodeString = ''
+	temp_line = line_to_fix
+	# print "1:", line_to_fix
+	if "True" in temp_line:
+		temp_line = temp_line.replace('True','False')
+	elif "False" in temp_line:
+		temp_line = temp_line.replace('False','True')
+
+	tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip()) ## Calculate and add requisite no. of tabs to the changed line of code
+	# print tabsToAdd
+	for i in range (0,tabsToAdd):
+		temp_line = '\t' + temp_line
+	codeToEdit[buggedLine-1] = temp_line
+
+	for line in codeToEdit:
+		tempCodeString += line + '\n'
+
+	if testRepairedCode.unittests(tempCodeString):
+		print '//===------------------------ Start Code with Bug Fix -----------------------===//'
+		print tempCodeString
+		print '//===------------------------- End Code with Bug Fix -----------------------===//'
+
+
+
 def main():
 	testFileName = sys.argv[1]
 	resultsFileName = sys.argv[2]
@@ -240,6 +267,8 @@ def main():
 	tryOperatorReplacement(line_to_fix.strip(), buggedOperators, suggestedOperatorListofLists, codeToEdit, original_code )
 	codeToEdit = back_up_code
 	tryVariableMapping(line_to_fix.strip(),buggedVariables, lines, codeToEdit)
+	codeToEdit = back_up_code
+	tryBoolReplacement(line_to_fix.strip(),codeToEdit)
 	#############################################################
 
 
