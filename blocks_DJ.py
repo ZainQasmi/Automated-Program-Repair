@@ -23,7 +23,6 @@ def loadScript(fname,lines):
 			lines.append(l)
     return i + 1
 
-
 def makeVarCombination(totalVariables, lenBuggedVars):
 	tempVarList = []
 	for c in combinations(totalVariables, lenBuggedVars):
@@ -33,10 +32,8 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 
 block_size = 3
 buggedLineNo = 7
-
 lines = []
 blocks_list = []
-
 
 f = open('importNames.csv', 'rb')
 reader = csv.reader(f)

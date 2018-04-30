@@ -227,8 +227,7 @@ def main():
 
 	############################################################
 	# before passing codeToEdit in each function. make codeToEdit=Original_bugged_code. Here original_bugged_code is mid.py in 
-	#its original incorrect. Otherwise there are problelms
-
+	# its original incorrect. Otherwise there are problelms
 	# update codeToEdit after every function call. Therefore I have introduced the back_up_code variable, which
 	# contains the original incorrect state of mid.py
 	back_up_code = codeToEdit
