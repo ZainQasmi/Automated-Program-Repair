@@ -34,11 +34,9 @@ block_size = 3
 buggedLineNo = 7
 lines = []
 blocks_list = []
-
 f = open('importNames.csv', 'rb')
 reader = csv.reader(f)
 for row in reader:
-	print row[0]
 	testFileName = row[0]
 	resultsFileName = row[1]
 f.close()
