@@ -5,6 +5,7 @@ import fileinput
 import linecache
 import os
 from optparse import OptionParser
+from parseArg import getArgs
 
 class Line:
 	def __init__(self, score=0.0, rank=0, text= "", lineNo=0):
@@ -49,7 +50,9 @@ def importResultsFile():
 			line = file.readline()
 			# print line
 			try:
-				numbers = tuple([int(num) for num in line.split(',')])
+				numbers = tuple(getArgs(line))
+				if numbers == ():
+					break
 				tests.append(numbers)
 			except ValueError:
 				break
