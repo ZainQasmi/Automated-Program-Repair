@@ -6,6 +6,8 @@ import collections
 from itertools import permutations
 from itertools import combinations
 import numpy as np
+import csv
+from os.path import splitext
 
 def get_buggyLine_operators(line):
 	operators = []
@@ -34,9 +36,17 @@ buggedLineNo = 7
 
 lines = []
 blocks_list = []
-loadScript('mid.py', lines)
 
-#lines = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+
+f = open('importNames.csv', 'rb')
+reader = csv.reader(f)
+for row in reader:
+	print row[0]
+	testFileName = row[0]
+	resultsFileName = row[1]
+f.close()
+
+loadScript(testFileName, lines)
 
 for i in range(0,len(lines)):
 	if (i+2 < len(lines)):
@@ -44,34 +54,18 @@ for i in range(0,len(lines)):
 			continue
 		else:
 			blocks_list.append(lines[i]+lines[i+1]+lines[i+2])
-	# print 'next'
 
 buggy_block = lines[5]+lines[6]+lines[7]
-
-
-key_word = keyword.kwlist + ['mid']
+key_word = keyword.kwlist + [splitext(testFileName)[0]]
 key_word = set(key_word)
-#print len(blocks_list)
 l_dist = {}
 l_dist_vars = {}
 
 for i in range(0,len(blocks_list)):
-	# print '////////////////////////'
-	# print buggy_block
-	# print '------------------------'
-	# print blocks_list[i]
-	# print '========================'
-	# print 'L distance: '
-	#l_distance.append(levenshtein_distance.compare(buggy_block,blocks_list[i]))
-	# print '////////////////////////'
 	bb_vars = set(get_buggyLine_operators(blocks_list[i]))
 	bb_vars = list(bb_vars - key_word)
 	l_dist[levenshtein_distance.compare(buggy_block,blocks_list[i])] = blocks_list[i]
 	l_dist_vars[levenshtein_distance.compare(buggy_block,blocks_list[i])] = bb_vars
-	
-	# print bb_vars
-	# print '\n\n'
-
 
 similarities = l_dist.keys()
 similarities = sorted(similarities,reverse = True)
@@ -81,30 +75,12 @@ if len(similarities) > 3:
 
 temp_vars = []
 for i in similarities:
-	print "similarity: " + str(i) + "\n" + str(l_dist[i])
+	# print "similarity: " + str(i) + "\n" + str(l_dist[i])
 	temp_vars.append(l_dist_vars[i])
-	print "variables: " + str(l_dist_vars[i]) + "\n"
-	print "//////////////////////////////////////////"
+	# print "variables: " + str(l_dist_vars[i]) + "\n"
+	# print "//////////////////////////////////////////"
 
 
-print "\n\n++++++++\n\n"
-
-for v_list in temp_vars:
-	print makeVarCombination(v_list,2)
-
-
-
-
-	
-#blocks_distance = collections.OrderedDict(sorted(l_dist.items(), reverse=True))
-#vars_distance = collections.OrderedDict(sorted(l_dist_vars.items(), reverse=True))
-#print blocks_distance
-#top_values = [i for i in l_dist if i >= (np.mean(l_dist.keys()))]
-#print blocks_distance[max(blocks_distance)]
-# for k,v in blocks_distance.iteritems():
-# 	print k,v
-# 	break
-# for k,v in vars_distance.iteritems():
-# 	vars_to_be_mapped = v
-# 	break
-# print "\n\n"
+# print "\n\n++++++++\n\n"
+# for v_list in temp_vars:
+# 	print makeVarCombination(v_list,2)

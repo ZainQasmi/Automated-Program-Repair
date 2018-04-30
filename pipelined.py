@@ -24,6 +24,7 @@ import string
 import tokenize, token
 from itertools import permutations
 from itertools import combinations
+from blocks_DJ import *
 
 ### Writes test filename and test result filename to file which will be used by tarantula.py
 with open("importNames.csv", "w") as text_file:
@@ -31,13 +32,13 @@ with open("importNames.csv", "w") as text_file:
 
 ### Executes tarantula which isolates the bugged line and stores it in list lines. 
 ### The line with highest likelihood of having a bug is at first index i.e. lines[0]
-print '//===----------------------- Running Tarantula ------------------------===//'
+print '//===-------------------- Running Tarantula ---------------------===//'
 execfile('tarantula.py')
-# print '//===----------------------- Returns Tarantula ------------------------===//'
+print '//===----------------------- Returns Tarantula ------------------------===//'
 
 print
 buggedLine = lines[0].lineNo
-print '//===-----------------------    Bugged Line    ------------------------===//'
+print '//===--------------------    Bugged Line    ---------------------===//'
 print lines[0].text.strip()
 
 def loadScript(fname,lines):
@@ -67,28 +68,12 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 
 def tryVariableReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
-
-	temp_line = line_to_fix
 	tempCodeString = ''
 	abc_list = list(string.ascii_uppercase)
+	new_lines = generate_new_lines_with_all_variable_combinations(line_to_fix, buggedVarList, suggestedVarListofLists)
 
-	for it in range(0,len(suggestedVarListofLists)):
-		temp_combination = list(suggestedVarListofLists[it])
-		temp_line = line_to_fix
-		replace_list=[]
-		abc_index=0
-		
-		for i in range(0,len(temp_combination)):
-			if temp_combination[i] in buggedVarList[i+1:]:
-				replace_list.append([temp_combination[i],abc_list[abc_index]])
-				temp_line = temp_line.replace(buggedVarList[i],abc_list[abc_index])
-				abc_index+=1
-			else:
-				temp_line = temp_line.replace(buggedVarList[i],temp_combination[i])
-
-		for i in range(0,len(replace_list)):
-			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
-
+	for temp_line in new_lines:
+		# print "2:",temp_line, line_to_fix
 		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip()) ## Calculate and add requisite no. of tabs to the changed line of code
 
 		for i in range (0,tabsToAdd):
@@ -99,11 +84,12 @@ def tryVariableReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, 
 			tempCodeString += line + '\n'
 
 		if testRepairedCode.unittests(tempCodeString):
-			print '//===------------------------ VAR: Start Code with Bug Fix -----------------------===//'
+			print '//===--------------- VAR: Start Code with Bug Fix ---------------===//'
 			print tempCodeString
-			print '//===------------------------- VAR: End Code with Bug Fix -----------------------===//'
+			print '//===---------------- VAR: End Code with Bug Fix ----------------===//'
 
 		tempCodeString = ''
+
 def get_buggyLine_operators(line):
 	operators = []
 	for t in tokenize.generate_tokens(iter([line]).next):
@@ -126,28 +112,12 @@ def get_list_of_all_operator_combinations(line,operators):
 def tryOperatorReplacement(line_to_fix, buggedOperators, suggestedOperatorListofLists, codeToEdit, original_code):
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
 
-	temp_line = line_to_fix
 	tempCodeString = ''
 	abc_list = list(string.ascii_uppercase)
-
-	for it in range(0,len(suggestedOperatorListofLists)):
-		temp_combination = list(suggestedOperatorListofLists[it])
-
-		temp_line = line_to_fix
-		
-		replace_list=[]
-		abc_index=0
-		for i in range(0,len(temp_combination)):
-			if temp_combination[i] in buggedOperators[i+1:]:
-				replace_list.append([temp_combination[i],abc_list[abc_index]])
-				temp_line = temp_line.replace(buggedOperators[i],abc_list[abc_index])
-				abc_index+=1
-			else:
-				temp_line = temp_line.replace(buggedOperators[i],temp_combination[i])
-
-		for i in range(0,len(replace_list)):
-			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
-
+	new_lines = generate_new_lines_with_all_operator_combinations(line_to_fix, buggedOperators, suggestedOperatorListofLists)
+	
+	for temp_line in new_lines:
+		# print "1:",temp_line, line_to_fix
 		tabsToAdd =  len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip()) ## Calculate and add requisite no. of tabs to the changed line of code
 
 		for i in range (0,tabsToAdd):
@@ -161,6 +131,76 @@ def tryOperatorReplacement(line_to_fix, buggedOperators, suggestedOperatorListof
 			print '//===------------------------ OPR: Start Code with Bug Fix -----------------------===//'
 			print tempCodeString
 			print '//===------------------------- OPR: End Code with Bug Fix -----------------------===//'
+
+def tryVariableMapping(line_to_fix, buggedVarList, p_lines, codeToEdit):
+	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
+
+	l_distances = l_dist.keys()
+	l_distances = sorted(l_distances, reverse = True)
+
+	if len(l_distances) > 3:
+		l_distances = l_distances[:3]
+
+	block_vars = []
+	for i in l_distances:
+		block_vars.append(l_dist_vars[i])
+
+	all_combs = []
+	for var_list in block_vars:
+		v_combinations = makeVarCombination(var_list,len(buggedVarList))
+		for each_comb_list in v_combinations:
+			all_combs.append(each_comb_list)
+	
+	all_combs = list(set(all_combs))
+	#print all_combs
+	corrected_lines = generate_new_lines_with_all_variable_combinations(line_to_fix,buggedVarList,all_combs)
+	#print corrected_lines
+
+	for each_line in corrected_lines:
+		tempCodeString = ''
+		tabsToAdd = len(codeToEdit[buggedLine-1]) - len(codeToEdit[buggedLine-1].lstrip())
+	
+		for i in range(0,tabsToAdd):
+			each_line = '\t' + each_line
+
+		codeToEdit[buggedLine-1] = each_line
+
+		for line in codeToEdit:
+			tempCodeString += line + '\n'
+
+		
+		if testRepairedCode.unittests(tempCodeString):
+			print '//===------------ Blocks: Start code with Bug Fix --------------===//'
+			print tempCodeString
+			print '//===------------- Blocks: End code with Bug Fix --------------===//'
+
+def generate_new_lines_with_all_variable_combinations(line_to_fix,buggedVarList,operator_combinations):
+	return generate_new_lines_with_all_operator_combinations(line_to_fix,buggedVarList,operator_combinations)
+
+def generate_new_lines_with_all_operator_combinations(line,operators,operator_combinations):
+	abc_list = list(string.ascii_uppercase)
+	new_lines = []
+
+	for it in range(0,len(operator_combinations)):
+		temp_combination = list(operator_combinations[it])
+		temp_line = line
+		replace_list=[]
+		abc_index=0
+
+		for i in range(0,len(temp_combination)):
+			if temp_combination[i] in operators[i+1:]:
+				replace_list.append([temp_combination[i],abc_list[abc_index]])
+				temp_line = temp_line.replace(operators[i],abc_list[abc_index])
+				abc_index+=1
+			else:
+				temp_line = temp_line.replace(operators[i],temp_combination[i])
+
+		for i in range(0,len(replace_list)):
+			temp_line = temp_line.replace(replace_list[i][1],replace_list[i][0])
+
+		new_lines.append(temp_line)
+
+	return new_lines
 
 def main():
 	testFileName = sys.argv[1]
@@ -200,7 +240,7 @@ def main():
 	suggestedOperatorListofLists = get_list_of_all_operator_combinations(line_to_fix.strip, buggedOperators)
 	tryOperatorReplacement(line_to_fix.strip(), buggedOperators, suggestedOperatorListofLists, codeToEdit, original_code )
 	codeToEdit = back_up_code
-	# tryVariableMapping(line_to_fix.strip(),buggedVariables, lines, codeToEdit)
+	tryVariableMapping(line_to_fix.strip(),buggedVariables, lines, codeToEdit)
 	#############################################################
 
 
