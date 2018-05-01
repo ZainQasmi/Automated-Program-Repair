@@ -90,7 +90,7 @@ def generate_new_lines_with_all_operator_combinations(line_to_fix,buggedVarList,
 
 ops = get_buggyLine_operators(b2)
 op_combinations = get_list_of_all_operator_combiantions(b2,ops)
-corrected_lines = generate_new_lines_with_all_operator_combinations(b2,ops,op_combinations)
+# corrected_lines = generate_new_lines_with_all_operator_combinations(b2,ops,op_combinations)
 
 # print ops
 # print op_combinations
