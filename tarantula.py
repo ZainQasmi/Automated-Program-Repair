@@ -5,6 +5,7 @@ import fileinput
 import linecache
 import os
 from optparse import OptionParser
+from parseArg import getArgs
 
 class Line:
 	def __init__(self, score=0.0, rank=0, text= "", lineNo=0):
@@ -49,11 +50,14 @@ def importResultsFile():
 			line = file.readline()
 			# print line
 			try:
-				numbers = tuple([int(num) for num in line.split(',')])
-				tests.append(numbers)
+				numbers = tuple(getArgs(line))
+				if numbers == ():
+					break
+				tests.append(str(numbers))
 			except ValueError:
 				break
 			line2 = file.readline()
+			numbers = str(numbers)
 			# print line2
 			if line2 == 'F\n' or line2 == 'F':
 				totalFailed += 1
@@ -165,7 +169,9 @@ for i in range(len(tests)):
 	current = tests[i]
 	testToLines[tests[i]] = []
 	sys.settrace(traceit)
-	exec('%s(*(tests[i]))' % funName)	
+	tool = eval(tests[i])
+	print "tool: ", tool
+	exec('%s(*tool)' % funName)	
 
 for i in range(1,numLines):
 	if i not in lineToTest.keys():
