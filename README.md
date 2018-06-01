@@ -32,11 +32,9 @@ sudo pip install nltk
 
 ## Running the tests
 
-We have tried to keep PyFix as generic as possible however it follows a particular standard for the three input files provided
+We have tried to keep PyFix as generic as possible however it follows a particular standard for the three input files provided.
 
-* Script to be debugged
-
-This must be in the form of a function that may take lists or real numbers as arguments.
+* The first argument which is the script to be debugged must be in the form of a python function that may take a list or real numbers as input arguments.
 
 ```
 def mid(x,y,z):
@@ -54,12 +52,40 @@ def mid(x,y,z):
     return m
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+* The second argument, which is the result of test cases returned by the bugged script and their input arguments, may have indefinite number of test inputs so long as every following line has the result of that test case which is whether it passed (P) or failed (F).
 
 ```
-Give an example
+3,3,5
+P
+1,2,3
+P
+3,2,1
+P
+5,5,5
+P
+5,3,4
+P
+2,1,3
+F
+```
+
+* The third argument is of unittests against which all of PyFix repaired scripts are tested. These have to be in the following format
+
+```
+def unittests(tempCodeString):
+    try:
+        exec(tempCodeString)
+        assert mid(2,1,3) == 2
+        assert mid(3,3,5) == 3
+        assert mid(1,2,3) == 2
+        assert mid(5,5,5) == 5
+        assert mid(5,3,4) == 4
+        assert mid(3,2,1) == 2
+        # print 'Following Case Passed:'
+        return True
+    except:
+        # print "A test case failed"
+        return False
 ```
 
 ## Deployment
