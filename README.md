@@ -137,6 +137,7 @@ In this case, line “m = y” has been replaced with “m = x” via Variable M
 
 ## Built With
 
+* [Project Report](https://github.com/ZainQasmi/Automated-Program-Repair/blob/master/Project_Report.pdf) - Detailed project report with all references
 * [SpiderLab](http://spideruci.org/fault-localization/) - The team behind Tarantula technique
 * [Paper](http://spideruci.org/papers/jones05.pdf) - Research Paper on the algorithm itself and evaluations
 
