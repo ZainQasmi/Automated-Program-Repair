@@ -18,6 +18,7 @@ python PyFix.py mid.py testCasesMid testMid
 ```
 ```
 python PyFix.py is_prime.py testCasesPrime testPrime
+```
 
 ### Prerequisites
 
