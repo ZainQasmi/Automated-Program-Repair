@@ -109,6 +109,7 @@ Line    Suspiciousness  Rank    Line of Code
 //===----------------------- Returns Tarantula ------------------------===//
 
 ```
+Here, the lines are listed in order of their likelihood of having a fault. In this case TarantulaPy successfully identifies that Line 7 has a bug.
 
 * While the Program Repair module would return the following
 
@@ -132,8 +133,7 @@ def mid(x,y,z):
 
 //===---------------- VAR: End Code with Bug Fix ----------------===//
 ```
-
-
+In this case, line “m = y” has been replaced with “m = x” via Variable Mapping hence fixing the function.
 
 ## Built With
 
