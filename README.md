@@ -108,4 +108,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* **Junaid Haroon Siddiqui** - *Project Supervisor* - [Junaid Haroon Siddiqui](https://github.com/jsiddiqui)
+* [Junaid Haroon Siddiqui](https://github.com/jsiddiqui) - *Project Supervisor*
