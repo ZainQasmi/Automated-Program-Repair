@@ -8,8 +8,11 @@ PyFix focuses on making debugging for programmers easier by localizing the bug a
 python PyFix.py <arg1> <arg2> <arg3>
 ```
 where
+
 arg1 = Your script to find bug in and repair
+
 arg2 = Result of test cases which will be passed to tarantula
+
 arg3 = Unittests for testing if repaired code has its bug fixed
 
 For example
@@ -129,7 +132,7 @@ def mid(x,y,z):
                         m = y
                 elif (x>z):
                         m = x
-        return m
+        return <main></main>
 
 //===---------------- VAR: End Code with Bug Fix ----------------===//
 ```
