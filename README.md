@@ -1,6 +1,6 @@
 # PyFix - Fault Localization & Automated Program Repair in Python
 
-One Paragraph of project description goes here
+PyFix focuses on making debugging for programmers easier by localizing the bug and synthesizing program repairs. Our tool aims to predict the most suspicious statements inside a Python program, modifies them based on the cues available from the rest of the program and verifies if that fixes the program.
 
 ## Getting Started
 
@@ -8,43 +8,28 @@ One Paragraph of project description goes here
 python participatedlined.py <arg1> <arg2> <arg3>
 ```
 where
-
 arg1 = Your script to find bug in and repair
-
 arg2 = Result of test cases which will be passed to tarantula
-
 arg3 = Unittests for testing if repaired code has its bug fixed
 
 For example
 ```
-python pipelined.py mid.py testCasesMid testMid
+python PyFix.py mid.py testCasesMid testMid
 ```
+```
+python PyFix.py is_prime.py testCasesPrime testPrime
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You would also need to install the following libraries:
+i. NumPy
+ii. NLTK
+
 
 ```
-Give examples
+sudo pip install numpy
+sudo pip install nltk
 ```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
