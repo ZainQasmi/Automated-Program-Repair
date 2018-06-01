@@ -5,7 +5,7 @@ PyFix focuses on making debugging for programmers easier by localizing the bug a
 ## Getting Started
 
 ```
-python participatedlined.py <arg1> <arg2> <arg3>
+python PyFix.py <arg1> <arg2> <arg3>
 ```
 where
 arg1 = Your script to find bug in and repair
@@ -88,29 +88,17 @@ def unittests(tempCodeString):
         return False
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [SpiderLab](http://spideruci.org/fault-localization/) - The team behind Tarantula technique
+* [Paper](http://spideruci.org/papers/jones05.pdf) - Research Paper on the Algorithm itself and Evaluations
 
-## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* - [Ali Ahsan](https://github.com/aliahsan07)
+* - [Zain Qasmi](https://github.com/ZainQasmi)
 
 ## License
 
