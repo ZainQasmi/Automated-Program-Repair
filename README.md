@@ -129,7 +129,7 @@ def mid(x,y,z):
                         m = y
                 elif (x>z):
                         m = x
-        return <main></main>
+        return m
 
 //===---------------- VAR: End Code with Bug Fix ----------------===//
 ```
