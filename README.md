@@ -32,14 +32,26 @@ sudo pip install nltk
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+We have tried to keep PyFix as generic as possible however it follows a particular standard for the three input files provided
 
-### Break down into end to end tests
+### Script to be debugged
 
-Explain what these tests test and why
+This must be in the form of a function that may take lists or real numbers as arguments.
 
 ```
-Give an example
+def mid(x,y,z):
+    m = z
+    if (y<z):
+        if(x<y):
+            m = y
+        elif (x<z):
+            m = y
+    else:
+        if(x>y):
+            m = y
+        elif (x>z):
+            m = x
+    return m
 ```
 
 ### And coding style tests
