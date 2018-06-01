@@ -1,5 +1,4 @@
-# PyFix
-# Fault Localization & Automated Program Repair in Python
+# PyFix - Fault Localization & Automated Program Repair in Python
 
 One Paragraph of project description goes here
 
