@@ -15,8 +15,6 @@ arg3 = Unittests for testing if repaired code has its bug fixed
 For example
 ```
 python PyFix.py mid.py testCasesMid testMid
-```
-```
 python PyFix.py is_prime.py testCasesPrime testPrime
 ```
 
