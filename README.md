@@ -34,7 +34,7 @@ sudo pip install nltk
 
 We have tried to keep PyFix as generic as possible however it follows a particular standard for the three input files provided
 
-### Script to be debugged
+* Script to be debugged
 
 This must be in the form of a function that may take lists or real numbers as arguments.
 
