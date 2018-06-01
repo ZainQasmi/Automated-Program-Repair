@@ -97,15 +97,15 @@ def unittests(tempCodeString):
 
 ## Authors
 
-* - [Ali Ahsan](https://github.com/aliahsan07)
-* - [Zain Qasmi](https://github.com/ZainQasmi)
+* [Ali Ahsan](https://github.com/aliahsan07)
+* [Zain Qasmi](https://github.com/ZainQasmi)
+* [Dawood Jehangir](https://github.com/dawood-jehangir)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* **Junaid Haroon Siddiqui** - *Project Supervisor* - [Junaid Haroon Siddiqui](https://github.com/jsiddiqui)
