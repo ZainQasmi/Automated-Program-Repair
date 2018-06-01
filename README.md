@@ -88,10 +88,57 @@ def unittests(tempCodeString):
         return False
 ```
 
+
+## Checking the results
+
+* When run on mid.py, Fault Localization module would return the following
+
+```
+Top 10 most suspicious lines
+Line    Suspiciousness  Rank    Line of Code
+7       0.833           1                               m = y
+6       0.714           2                       elif (x<z):
+4       0.625           3                       if(x<y):
+1       0.5             7       def mid(x,y,z):
+2       0.5             7               m = z
+3       0.5             7               if (y<z):
+13      0.5             7               return m
+5       0.0             13                              m = y
+8       0.0             13              else:
+9       0.0             13                      if(x>y):
+//===----------------------- Returns Tarantula ------------------------===//
+
+```
+
+* While the Program Repair module would return the following
+
+```
+//===--------------------    Bugged Line    ---------------------===//
+m = y
+//===--------------- VAR: Start Code with Bug Fix ---------------===//
+def mid(x,y,z):
+        m = z
+        if (y<z):
+                if(x<y):
+                        m = y
+                elif (x<z):
+                        m = x
+        else:
+                if(x>y):
+                        m = y
+                elif (x>z):
+                        m = x
+        return m
+
+//===---------------- VAR: End Code with Bug Fix ----------------===//
+```
+
+
+
 ## Built With
 
 * [SpiderLab](http://spideruci.org/fault-localization/) - The team behind Tarantula technique
-* [Paper](http://spideruci.org/papers/jones05.pdf) - Research Paper on the Algorithm itself and Evaluations
+* [Paper](http://spideruci.org/papers/jones05.pdf) - Research Paper on the algorithm itself and evaluations
 
 
 
