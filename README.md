@@ -3,7 +3,7 @@
 PyFix focuses on making debugging for programmers easier by localizing the bug and synthesizing program repairs. Our tool aims to predict the most suspicious statements inside a Python program, modifies them based on the cues available from the rest of the program and verifies if that fixes the program.
 
 ## Getting Started
-
+Make sure you have Python 3.9 installed.
 ```
 python PyFix.py <arg1> <arg2> <arg3>
 ```
@@ -14,6 +14,7 @@ where
 
 For example
 ```
+# Make sure you are in the src/ directory and have the dependencies in requirements.txt installed
 python PyFix.py mid.py testCasesMid testMid
 python PyFix.py is_prime.py testCasesPrime testPrime
 ```
