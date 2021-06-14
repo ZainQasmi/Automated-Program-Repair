@@ -33,7 +33,7 @@ def importFileNames():
 	global testFileName
 	global resultsFileName
 	global funName
-	f = open('importNames.csv', 'rb')
+	f = open('importNames.csv', 'rt')
 	reader = csv.reader(f)
 	for row in reader:
 	    testFileName = row[0]
@@ -102,12 +102,12 @@ def traceit(frame, event, arg):
 	return traceit
 
 def file_len(fname):
-    with open(fname) as f:
-        for i, l in enumerate(f):
+	with open(fname) as f:
+		for i, l in enumerate(f):
 			line = Line(0.0,0,l, i+1)
 			testCode.append(l)
 			lines.append(line)
-    return i + 1
+	return i + 1
 
 def makeListOfAllLines():
 	for i in range(len(lines)):
@@ -127,10 +127,10 @@ def removeKachra():
 		lines.remove(obj)
 
 def printToScreen():
-	print "Top 10 most suspicious lines"
-	print 'Line', '\t', 'Suspiciousness', '\t', 'Rank', '\t', 'Line of Code' #, '\t', tests[0], '\t', tests[1], '\t', tests[2], '\t', tests[3], '\t', tests[4], '\t', tests[5]
+	print("Top 10 most suspicious lines")
+	print('Line', '\t', 'Suspiciousness', '\t', 'Rank', '\t', 'Line of Code') #, '\t', tests[0], '\t', tests[1], '\t', tests[2], '\t', tests[3], '\t', tests[4], '\t', tests[5]
 	for i in range(min(10,numLines)):
-		print lines[i].lineNo, '\t', lines[i].score, '\t', '\t', lines[i].rank, '\t', lines[i].text.rstrip()
+		print(lines[i].lineNo, '\t', lines[i].score, '\t', '\t', lines[i].rank, '\t', lines[i].text.rstrip())
 
 def exportToFile():
 	file = open(outputFile, "w")
@@ -142,7 +142,7 @@ def exportToFile():
 			continue
 	file.write('\t\t\t\t' + str(results[tests[0]]) + '\t\t' + str(results[tests[1]]) + '\t\t' + str(results[tests[2]]) + '\t\t' + str(results[tests[3]]) + '\t\t' + str(results[tests[4]]) + '\t\t' + str(results[tests[5]]))
 	file.close()
-	print ("Detailed report exported to output.txt")
+	print("Detailed report exported to output.txt")
 
 ### Globals - appearing as the very incarnation of devil himself
 testFileName = ''
@@ -160,7 +160,8 @@ testCode = []
 testCaseResuts = []
 
 importFileNames()
-execfile(testFileName)
+# execfile(testFileName)
+exec(compile(open(testFileName, "rb").read(), testFileName, 'exec'))
 importResultsFile()
 numLines = file_len(testFileName)
 
@@ -170,7 +171,7 @@ for i in range(len(tests)):
 	testToLines[tests[i]] = []
 	sys.settrace(traceit)
 	tool = eval(tests[i])
-	print "tool: ", tool
+	print("tool: ", tool)
 	exec('%s(*tool)' % funName)	
 
 for i in range(1,numLines):
@@ -180,7 +181,7 @@ for i in range(1,numLines):
 # Calculate Suscpiciousness
 suspiciousness = {}
 scoreList = []
-for k in lineToTest.keys():
+for k in list(lineToTest.keys()):
 	try:
 		score = scores(k)
 		scoreList.append(score)

@@ -32,19 +32,22 @@ with open("importNames.csv", "w") as text_file:
 from blocks_DJ import *
 ### Executes tarantula which isolates the bugged line and stores it in list lines. 
 ### The line with highest likelihood of having a bug is at first index i.e. lines[0]
-print '//===-------------------- Running Tarantula ---------------------===//'
-execfile('tarantula.py')
-print '//===----------------------- Returns Tarantula ------------------------===//'
+print('//===-------------------- Running Tarantula ---------------------===//')
+# execfile('tarantula.py')
+# execfile(filename, globals, locals)
+filename = 'tarantula.py'
+exec(compile(open(filename, "rb").read(), filename, 'exec'))
+print('//===----------------------- Returns Tarantula ------------------------===//')
 
 buggedLine = lines[0].lineNo
-print '//===--------------------    Bugged Line    ---------------------===//'
-print lines[0].text.strip()
+print('//===--------------------    Bugged Line    ---------------------===//')
+print(lines[0].text.strip())
 
 def loadScript(fname,lines):
-    with open(fname) as f:
-        for i, l in enumerate(f):
+	with open(fname) as f:
+		for i, l in enumerate(f):
 			lines.append(l)
-    return i + 1
+	return i + 1
 
 def makeVarListFile(sourceScript):
 	with open(sourceScript, 'r') as myfile:
@@ -66,7 +69,12 @@ def makeVarCombination(totalVariables, lenBuggedVars):
 	return tempVarList
 
 def tryVariableReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, codeToEdit, original_code):
-	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
+	# exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
+	# print(sys.argv[3])
+	# exec(f'import {sys.argv[3]} as testRepairedCode') # Import Test Module Dynamically
+	# tempCodeString = ''
+	# import testMid as testRepairedCode
+	import testPrime as testRepairedCode
 	tempCodeString = ''
 	abc_list = list(string.ascii_uppercase)
 	new_lines = generate_new_lines_with_all_variable_combinations(line_to_fix, buggedVarList, suggestedVarListofLists)
@@ -83,15 +91,15 @@ def tryVariableReplacement(line_to_fix, buggedVarList, suggestedVarListofLists, 
 			tempCodeString += line + '\n'
 
 		if testRepairedCode.unittests(tempCodeString):
-			print '//===--------------- VAR: Start Code with Bug Fix ---------------===//'
-			print tempCodeString
-			print '//===---------------- VAR: End Code with Bug Fix ----------------===//'
+			print('//===--------------- VAR: Start Code with Bug Fix ---------------===//')
+			print(tempCodeString)
+			print('//===---------------- VAR: End Code with Bug Fix ----------------===//')
 
 		tempCodeString = ''
 
 def get_buggyLine_operators(line):
 	operators = []
-	for t in tokenize.generate_tokens(iter([line]).next):
+	for t in tokenize.generate_tokens(iter([line]).__next__):
 	    if token.tok_name[t[0]] == 'OP':
 	    	operators.append(t[1])
 	return operators
@@ -127,9 +135,9 @@ def tryOperatorReplacement(line_to_fix, buggedOperators, suggestedOperatorListof
 			tempCodeString += line + '\n'
 
 		if testRepairedCode.unittests(tempCodeString):
-			print '//===------------------------ OPR: Start Code with Bug Fix -----------------------===//'
-			print tempCodeString
-			print '//===------------------------- OPR: End Code with Bug Fix -----------------------===//'
+			print('//===------------------------ OPR: Start Code with Bug Fix -----------------------===//')
+			print(tempCodeString)
+			print('//===------------------------- OPR: End Code with Bug Fix -----------------------===//')
 
 def tryVariableMapping(line_to_fix, buggedVarList, p_lines, codeToEdit):
 	exec('import %s as testRepairedCode'%sys.argv[3]) # Import Test Module Dynamically
@@ -169,9 +177,9 @@ def tryVariableMapping(line_to_fix, buggedVarList, p_lines, codeToEdit):
 
 		
 		if testRepairedCode.unittests(tempCodeString):
-			print '//===------------ Blocks: Start code with Bug Fix --------------===//'
-			print tempCodeString
-			print '//===------------- Blocks: End code with Bug Fix --------------===//'
+			print('//===------------ Blocks: Start code with Bug Fix --------------===//')
+			print(tempCodeString)
+			print('//===------------- Blocks: End code with Bug Fix --------------===//')
 
 def generate_new_lines_with_all_variable_combinations(line_to_fix,buggedVarList,operator_combinations):
 	return generate_new_lines_with_all_operator_combinations(line_to_fix,buggedVarList,operator_combinations)
@@ -223,9 +231,9 @@ def tryBoolReplacement(line_to_fix,codeToEdit):
 		tempCodeString += line + '\n'
 
 	if testRepairedCode.unittests(tempCodeString):
-		print '//===------------------------ Start Code with Bug Fix -----------------------===//'
-		print tempCodeString
-		print '//===------------------------- End Code with Bug Fix -----------------------===//'
+		print('//===------------------------ Start Code with Bug Fix -----------------------===//')
+		print(tempCodeString)
+		print('//===------------------------- End Code with Bug Fix -----------------------===//')
 
 
 

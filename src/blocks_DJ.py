@@ -11,17 +11,17 @@ from os.path import splitext
 
 def get_buggyLine_operators(line):
 	operators = []
-	for t in tokenize.generate_tokens(iter([line]).next):
+	for t in tokenize.generate_tokens(iter([line]).__next__):
 	    if token.tok_name[t[0]] == 'NAME':
 	    	operators.append(t[1])
 
 	return operators
 
 def loadScript(fname,lines):
-    with open(fname) as f:
-        for i, l in enumerate(f):
+	with open(fname) as f:
+		for i, l in enumerate(f):
 			lines.append(l)
-    return i + 1
+	return i + 1
 
 def makeVarCombination(totalVariables, lenBuggedVars):
 	tempVarList = []
@@ -34,7 +34,7 @@ block_size = 3
 buggedLineNo = 7
 lines = []
 blocks_list = []
-f = open('importNames.csv', 'rb')
+f = open('importNames.csv', 'rt')
 reader = csv.reader(f)
 for row in reader:
 	testFileName = row[0]
